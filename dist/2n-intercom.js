@@ -8,7 +8,7 @@
  * Resource URL (auto-added by HACS): /hacsfiles/2n-intercom/2n-intercom.js
  *
  * Card config:
- *   type: custom:2n-intercom-card
+ *   type: custom:twon-intercom-card
  *   entity_prefix: "2n_intercom_front_door"   # prefix of your device entities
  *   title: "Front Door Intercom"               # optional
  *   show_camera: true                          # optional, default true
@@ -1097,7 +1097,7 @@ class TwoNIntercomCard extends HTMLElement {
 
   static getStubConfig() {
     return {
-      type: "custom:2n-intercom-card",
+      type: "custom:twon-intercom-card",
       entity_prefix: "",
       title: "2N Intercom",
       show_camera: true,
@@ -1111,11 +1111,11 @@ class TwoNIntercomCard extends HTMLElement {
   }
 }
 
-customElements.define("2n-intercom-card", TwoNIntercomCard);
+customElements.define("twon-intercom-card", TwoNIntercomCard);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type:        "2n-intercom-card",
+  type:        "twon-intercom-card",
   name:        "2N Intercom Manager",
   description: "Manage 2N IP intercom users, camera, and door switches",
   preview:     false,
