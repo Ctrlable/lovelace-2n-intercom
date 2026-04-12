@@ -125,33 +125,30 @@ class TwoNIntercomCard extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :host {
-        --bg:        #0f1117;
-        --bg2:       #171b25;
-        --bg3:       #1e2330;
-        --border:    #2a3040;
-        --accent:    #3b82f6;
-        --accent2:   #1d4ed8;
-        --success:   #22c55e;
-        --danger:    #ef4444;
-        --warn:      #f59e0b;
-        --text:      #e2e8f0;
-        --text2:     #94a3b8;
-        --text3:     #64748b;
-        --radius:    12px;
-        --radius-sm: 8px;
-        font-family: 'DM Sans', sans-serif;
-        color: var(--text);
+        /* Map our vars to HA theme variables */
+        --nic-bg:        var(--card-background-color, var(--ha-card-background, #fff));
+        --nic-bg2:       var(--secondary-background-color, #f0f0f0);
+        --nic-bg3:       var(--primary-background-color, #fafafa);
+        --nic-border:    var(--divider-color, rgba(0,0,0,0.12));
+        --nic-accent:    var(--primary-color, #03a9f4);
+        --nic-success:   var(--success-color, #4caf50);
+        --nic-danger:    var(--error-color, #f44336);
+        --nic-warn:      var(--warning-color, #ff9800);
+        --nic-text:      var(--primary-text-color, #212121);
+        --nic-text2:     var(--secondary-text-color, #727272);
+        --nic-text3:     var(--disabled-text-color, #bdbdbd);
+        --nic-radius:    var(--ha-card-border-radius, 12px);
+        --nic-radius-sm: 8px;
+        font-family: var(--paper-font-common-base_-_font-family, inherit);
+        color: var(--primary-text-color);
       }
 
       .card {
-        background: var(--bg);
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
+        background: var(--nic-bg);
+        border-radius: var(--nic-radius);
         overflow: hidden;
       }
 
@@ -160,45 +157,46 @@ class TwoNIntercomCard extends HTMLElement {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 16px 20px;
-        background: var(--bg2);
-        border-bottom: 1px solid var(--border);
+        padding: 12px 16px;
+        background: var(--nic-bg2);
+        border-bottom: 1px solid var(--nic-border);
       }
       .header-left { display: flex; align-items: center; gap: 10px; }
       .header-icon {
         width: 32px; height: 32px;
-        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        background: var(--nic-accent);
         border-radius: 8px;
         display: flex; align-items: center; justify-content: center;
         font-size: 16px;
+        opacity: 0.9;
       }
-      .header-title { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; }
-      .header-sub   { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+      .header-title { font-size: 15px; font-weight: 500; }
+      .header-sub   { font-size: 11px; color: var(--nic-text2); }
 
       /* Nav tabs */
       .nav {
         display: flex;
-        padding: 0 20px;
-        background: var(--bg2);
-        border-bottom: 1px solid var(--border);
+        padding: 0 16px;
+        background: var(--nic-bg2);
+        border-bottom: 1px solid var(--nic-border);
         gap: 4px;
       }
       .nav-btn {
-        padding: 10px 14px;
+        padding: 10px 12px;
         font-size: 12px;
         font-weight: 500;
-        color: var(--text3);
+        color: var(--nic-text2);
         background: none;
         border: none;
         cursor: pointer;
         border-bottom: 2px solid transparent;
         transition: all 0.15s;
-        font-family: 'DM Sans', sans-serif;
+        font-family: inherit;
         letter-spacing: 0.03em;
         text-transform: uppercase;
       }
-      .nav-btn:hover  { color: var(--text); }
-      .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+      .nav-btn:hover  { color: var(--nic-text); }
+      .nav-btn.active { color: var(--nic-accent); border-bottom-color: var(--nic-accent); }
 
       /* Camera */
       .camera-wrap {
@@ -214,89 +212,88 @@ class TwoNIntercomCard extends HTMLElement {
       }
       .camera-overlay {
         position: absolute; inset: 0;
-        background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.6));
+        background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.5));
         pointer-events: none;
       }
       .camera-badge {
         position: absolute; top: 10px; left: 10px;
-        background: rgba(0,0,0,0.6);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.55);
         border-radius: 6px;
         padding: 4px 8px;
         font-size: 10px;
-        font-family: 'DM Mono', monospace;
-        color: var(--text2);
+        color: #fff;
         display: flex; align-items: center; gap: 5px;
       }
       .live-dot {
         width: 6px; height: 6px;
         border-radius: 50%;
-        background: var(--success);
+        background: var(--nic-success);
         animation: pulse 2s infinite;
       }
       .camera-refresh {
         position: absolute; top: 10px; right: 10px;
-        background: rgba(0,0,0,0.5);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.45);
+        border: none;
         border-radius: 6px;
-        padding: 6px;
+        padding: 6px 8px;
         cursor: pointer;
         font-size: 14px;
         line-height: 1;
+        color: #fff;
         transition: background 0.15s;
       }
-      .camera-refresh:hover { background: rgba(255,255,255,0.15); }
+      .camera-refresh:hover { background: rgba(0,0,0,0.7); }
       .camera-no-feed {
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
-        height: 220px;
-        gap: 8px; color: var(--text3);
+        height: 200px;
+        gap: 8px; color: var(--nic-text2);
         font-size: 13px;
+        background: var(--nic-bg2);
       }
       .camera-no-feed .icon { font-size: 36px; }
 
       /* Switch row */
       .switches {
         display: flex; gap: 8px;
-        padding: 12px 16px;
-        background: var(--bg2);
-        border-bottom: 1px solid var(--border);
+        padding: 10px 16px;
+        background: var(--nic-bg2);
+        border-bottom: 1px solid var(--nic-border);
         flex-wrap: wrap;
       }
       .switch-btn {
         flex: 1; min-width: 100px;
         display: flex; align-items: center; gap: 8px;
-        padding: 10px 14px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
+        padding: 8px 12px;
+        background: var(--nic-bg3);
+        border: 1px solid var(--nic-border);
+        border-radius: var(--nic-radius-sm);
         cursor: pointer;
         transition: all 0.15s;
-        font-family: 'DM Sans', sans-serif;
+        font-family: inherit;
         font-size: 13px;
-        color: var(--text);
+        color: var(--nic-text);
       }
-      .switch-btn:hover { border-color: var(--accent); background: rgba(59,130,246,0.05); }
-      .switch-btn.on    { border-color: var(--success); background: rgba(34,197,94,0.08); }
+      .switch-btn:hover { border-color: var(--nic-accent); }
+      .switch-btn.on    { border-color: var(--nic-success); }
       .switch-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-      .switch-dot.on  { background: var(--success); box-shadow: 0 0 6px var(--success); }
-      .switch-dot.off { background: var(--text3); }
+      .switch-dot.on  { background: var(--nic-success); }
+      .switch-dot.off { background: var(--nic-text3); }
       .switch-label { font-weight: 500; font-size: 12px; flex: 1; }
       .switch-trigger {
         margin-left: auto;
-        background: rgba(59,130,246,0.15);
-        border: 1px solid rgba(59,130,246,0.3);
+        background: var(--nic-accent);
+        border: none;
         border-radius: 4px;
-        padding: 3px 7px;
-        font-size: 10px;
-        color: var(--accent);
+        padding: 3px 8px;
+        font-size: 11px;
+        color: #fff;
         cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
-        transition: background 0.15s;
+        font-family: inherit;
+        opacity: 0.85;
+        transition: opacity 0.15s;
       }
-      .switch-trigger:hover { background: rgba(59,130,246,0.3); }
+      .switch-trigger:hover { opacity: 1; }
 
       /* Content */
       .content { padding: 16px; }
@@ -306,73 +303,77 @@ class TwoNIntercomCard extends HTMLElement {
         display: flex; align-items: center; justify-content: space-between;
         margin-bottom: 12px;
       }
-      .section-title { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+      .section-title {
+        font-size: 11px; font-weight: 500;
+        color: var(--nic-text2);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
       .btn-add {
         display: flex; align-items: center; gap: 5px;
-        padding: 7px 12px;
-        background: var(--accent);
+        padding: 6px 12px;
+        background: var(--nic-accent);
         color: #fff;
-        border: none; border-radius: var(--radius-sm);
-        font-size: 12px; font-weight: 600;
+        border: none; border-radius: var(--nic-radius-sm);
+        font-size: 12px; font-weight: 500;
         cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
-        transition: background 0.15s;
-        letter-spacing: 0.02em;
+        font-family: inherit;
+        transition: opacity 0.15s;
       }
-      .btn-add:hover { background: var(--accent2); }
+      .btn-add:hover { opacity: 0.85; }
 
       .user-card {
         display: flex; align-items: center; gap: 12px;
-        padding: 12px 14px;
-        background: var(--bg2);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+        background: var(--nic-bg2);
+        border: 1px solid var(--nic-border);
+        border-radius: var(--nic-radius-sm);
         margin-bottom: 8px;
         transition: border-color 0.15s;
         cursor: pointer;
       }
-      .user-card:hover { border-color: var(--accent); }
+      .user-card:hover { border-color: var(--nic-accent); }
       .user-avatar {
         width: 36px; height: 36px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        border-radius: 50%;
+        background: var(--nic-accent);
         display: flex; align-items: center; justify-content: center;
-        font-size: 15px; font-weight: 600; flex-shrink: 0;
+        font-size: 14px; font-weight: 500; flex-shrink: 0;
         text-transform: uppercase;
         color: #fff;
+        opacity: 0.85;
       }
       .user-info { flex: 1; min-width: 0; }
-      .user-name  { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .user-meta  { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 2px; }
+      .user-name  { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--nic-text); }
+      .user-meta  { font-size: 11px; color: var(--nic-text2); margin-top: 2px; }
       .user-badges { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
       .badge {
-        padding: 2px 7px;
+        padding: 2px 6px;
         border-radius: 4px;
         font-size: 10px;
         font-weight: 500;
-        letter-spacing: 0.03em;
       }
-      .badge-pin    { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.25); }
-      .badge-code   { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
-      .badge-card   { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
-      .badge-virt   { background: rgba(34,197,94,0.15);  color: #4ade80;  border: 1px solid rgba(34,197,94,0.25); }
+      .badge-pin    { background: rgba(3,169,244,0.15);  color: var(--nic-accent); }
+      .badge-code   { background: rgba(156,39,176,0.12); color: #9c27b0; }
+      .badge-card   { background: rgba(255,152,0,0.12);  color: var(--nic-warn); }
+      .badge-virt   { background: rgba(76,175,80,0.12);  color: var(--nic-success); }
       .user-actions { display: flex; gap: 6px; flex-shrink: 0; }
       .icon-btn {
         width: 30px; height: 30px;
         border-radius: 6px;
-        border: 1px solid var(--border);
-        background: var(--bg3);
+        border: 1px solid var(--nic-border);
+        background: transparent;
         cursor: pointer;
         display: flex; align-items: center; justify-content: center;
         font-size: 14px;
         transition: all 0.15s;
+        color: var(--nic-text2);
       }
-      .icon-btn:hover.edit   { border-color: var(--accent);  background: rgba(59,130,246,0.1); }
-      .icon-btn:hover.delete { border-color: var(--danger);  background: rgba(239,68,68,0.1); }
+      .icon-btn:hover { border-color: var(--nic-text2); color: var(--nic-text); }
 
       .no-users {
         text-align: center; padding: 40px 20px;
-        color: var(--text3); font-size: 13px;
+        color: var(--nic-text2); font-size: 13px;
       }
       .no-users .icon { font-size: 40px; margin-bottom: 10px; }
 
@@ -384,143 +385,156 @@ class TwoNIntercomCard extends HTMLElement {
       .back-btn {
         width: 30px; height: 30px;
         border-radius: 6px;
-        border: 1px solid var(--border);
-        background: var(--bg3);
+        border: 1px solid var(--nic-border);
+        background: transparent;
         cursor: pointer;
         display: flex; align-items: center; justify-content: center;
         font-size: 16px;
+        color: var(--nic-text2);
         transition: all 0.15s;
       }
-      .back-btn:hover { border-color: var(--text2); }
-      .form-title { font-size: 16px; font-weight: 600; }
+      .back-btn:hover { border-color: var(--nic-text2); color: var(--nic-text); }
+      .form-title { font-size: 16px; font-weight: 500; color: var(--nic-text); }
 
       .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-      .form-grid.full { grid-template-columns: 1fr; }
       .form-group { display: flex; flex-direction: column; gap: 5px; }
       .form-group.span2 { grid-column: span 2; }
-      .form-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; }
+      .form-label {
+        font-size: 11px; font-weight: 500;
+        color: var(--nic-text2);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
       .form-input {
-        padding: 9px 12px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        color: var(--text);
+        padding: 8px 10px;
+        background: var(--nic-bg2);
+        border: 1px solid var(--nic-border);
+        border-radius: var(--nic-radius-sm);
+        color: var(--nic-text);
         font-size: 13px;
-        font-family: 'DM Sans', sans-serif;
+        font-family: inherit;
         transition: border-color 0.15s;
         outline: none;
         width: 100%;
       }
-      .form-input:focus { border-color: var(--accent); }
-      .form-hint { font-size: 10px; color: var(--text3); }
+      .form-input:focus { border-color: var(--nic-accent); }
+      .form-hint { font-size: 10px; color: var(--nic-text3); }
 
       .form-section-title {
-        font-size: 11px; font-weight: 600;
-        color: var(--text3); text-transform: uppercase;
-        letter-spacing: 0.05em;
+        font-size: 11px; font-weight: 500;
+        color: var(--nic-text2);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
         margin: 16px 0 10px;
         padding-top: 16px;
-        border-top: 1px solid var(--border);
+        border-top: 1px solid var(--nic-border);
       }
 
       .codes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-      .code-input-wrap { position: relative; }
-      .code-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+      .code-label { font-size: 10px; color: var(--nic-text2); margin-bottom: 4px; }
 
       .form-actions {
         display: flex; gap: 8px; justify-content: flex-end;
         margin-top: 20px; padding-top: 16px;
-        border-top: 1px solid var(--border);
+        border-top: 1px solid var(--nic-border);
       }
       .btn {
-        padding: 9px 18px;
-        border-radius: var(--radius-sm);
-        font-size: 13px; font-weight: 600;
+        padding: 8px 16px;
+        border-radius: var(--nic-radius-sm);
+        font-size: 13px; font-weight: 500;
         cursor: pointer;
         border: none;
-        font-family: 'DM Sans', sans-serif;
-        transition: all 0.15s;
+        font-family: inherit;
+        transition: opacity 0.15s;
       }
-      .btn-primary { background: var(--accent);  color: #fff; }
-      .btn-primary:hover { background: var(--accent2); }
-      .btn-danger  { background: var(--danger);  color: #fff; }
-      .btn-danger:hover  { background: #dc2626; }
-      .btn-ghost   { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
-      .btn-ghost:hover   { border-color: var(--text2); }
-      .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+      .btn-primary { background: var(--nic-accent); color: #fff; }
+      .btn-primary:hover { opacity: 0.85; }
+      .btn-danger  { background: var(--nic-danger); color: #fff; }
+      .btn-danger:hover  { opacity: 0.85; }
+      .btn-ghost   {
+        background: transparent;
+        color: var(--nic-text2);
+        border: 1px solid var(--nic-border);
+      }
+      .btn-ghost:hover { border-color: var(--nic-text2); color: var(--nic-text); }
+      .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
       /* Confirm dialog */
       .dialog-backdrop {
         position: fixed; inset: 0;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(4px);
+        background: rgba(0,0,0,0.5);
         z-index: 1000;
         display: flex; align-items: center; justify-content: center;
       }
       .dialog {
-        background: var(--bg2);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
+        background: var(--nic-bg);
+        border: 1px solid var(--nic-border);
+        border-radius: var(--nic-radius);
         padding: 24px;
         max-width: 380px; width: 90%;
+        box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0,0,0,0.15));
         animation: fadeIn 0.15s ease;
       }
-      .dialog-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-      .dialog-body  { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
-      .dialog-name  { color: var(--text); font-weight: 600; }
+      .dialog-title { font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--nic-text); }
+      .dialog-body  { font-size: 13px; color: var(--nic-text2); margin-bottom: 20px; line-height: 1.5; }
+      .dialog-name  { color: var(--nic-text); font-weight: 600; }
       .dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
       /* Toast */
       .toast {
         position: fixed; bottom: 20px; right: 20px;
-        padding: 12px 16px;
-        border-radius: var(--radius-sm);
+        padding: 10px 14px;
+        border-radius: var(--nic-radius-sm);
         font-size: 13px; font-weight: 500;
         z-index: 9999;
         animation: slideUp 0.2s ease;
         display: flex; align-items: center; gap: 8px;
-        min-width: 220px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        min-width: 200px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        color: #fff;
       }
-      .toast.success { background: #166534; border: 1px solid #16a34a; color: #bbf7d0; }
-      .toast.error   { background: #7f1d1d; border: 1px solid #dc2626; color: #fecaca; }
+      .toast.success { background: var(--nic-success); }
+      .toast.error   { background: var(--nic-danger); }
 
       /* Loading spinner */
       .spinner {
-        width: 16px; height: 16px;
-        border: 2px solid rgba(255,255,255,0.2);
+        width: 14px; height: 14px;
+        border: 2px solid rgba(255,255,255,0.3);
         border-top-color: #fff;
         border-radius: 50%;
         animation: spin 0.6s linear infinite;
         flex-shrink: 0;
+        display: inline-block;
       }
 
       /* Stats row */
       .stats {
         display: grid; grid-template-columns: repeat(3, 1fr);
-        gap: 1px; background: var(--border);
+        gap: 1px;
+        background: var(--nic-border);
         margin-bottom: 16px;
-        border-radius: var(--radius-sm);
+        border-radius: var(--nic-radius-sm);
         overflow: hidden;
+        border: 1px solid var(--nic-border);
       }
       .stat {
-        background: var(--bg2);
+        background: var(--nic-bg2);
         padding: 12px;
         text-align: center;
       }
-      .stat-value { font-size: 22px; font-weight: 600; color: var(--text); font-family: 'DM Mono', monospace; }
-      .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+      .stat-value { font-size: 20px; font-weight: 400; color: var(--nic-accent); }
+      .stat-label { font-size: 10px; color: var(--nic-text2); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
 
       /* Scroll */
       .user-scroll { max-height: 320px; overflow-y: auto; padding-right: 2px; }
       .user-scroll::-webkit-scrollbar { width: 4px; }
       .user-scroll::-webkit-scrollbar-track { background: transparent; }
-      .user-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+      .user-scroll::-webkit-scrollbar-thumb { background: var(--nic-border); border-radius: 2px; }
 
       @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.4} }
       @keyframes spin   { to{transform:rotate(360deg)} }
-      @keyframes fadeIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
-      @keyframes slideUp{ from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+      @keyframes fadeIn { from{opacity:0;transform:scale(0.97)} to{opacity:1;transform:scale(1)} }
+      @keyframes slideUp{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
     `;
   }
 
@@ -726,7 +740,7 @@ class TwoNIntercomCard extends HTMLElement {
       <div class="no-users">
         <div class="icon">👤</div>
         <div>No users in directory</div>
-        <div style="font-size:11px;margin-top:6px;color:var(--text3)">Add your first user to get started</div>
+        <div style="font-size:11px;margin-top:6px;color:var(--nic-text3)">Add your first user to get started</div>
       </div>
     `;
   }
@@ -779,7 +793,7 @@ class TwoNIntercomCard extends HTMLElement {
         </div>
         <div class="form-group">
           <label class="form-label">Clear PIN</label>
-          <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer;font-size:13px;color:var(--text2)">
+          <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer;font-size:13px;color:var(--nic-text2)">
             <input type="checkbox" id="f-clear-pin" style="accent-color:var(--accent)">
             Remove existing PIN
           </label>
@@ -793,11 +807,11 @@ class TwoNIntercomCard extends HTMLElement {
             <div class="code-label">Slot ${i} ${codes[i-1] ? "●" : "○"}</div>
             <input class="form-input" id="f-code-${i}" type="password"
                    placeholder="${codes[i-1] ? "••••" : "empty"}"
-                   style="font-family:'DM Mono',monospace">
+                   style="font-family:inherit">
           </div>
         `).join("")}
       </div>
-      <div style="font-size:11px;color:var(--text3);margin-top:6px">Leave blank to keep existing codes. Enter a space to clear a slot.</div>
+      <div style="font-size:11px;color:var(--nic-text3);margin-top:6px">Leave blank to keep existing codes. Enter a space to clear a slot.</div>
 
       <div class="form-section-title">Access Validity (optional)</div>
       <div class="form-grid">
