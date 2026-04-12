@@ -961,7 +961,7 @@ class TwoNIntercomCard extends HTMLElement {
     }
 
     // Build service data
-    const data: Record<string, any> = { user_name: name };
+    const data = { user_name: name };
     if (this._entryId) data.entry_id = this._entryId;
     if (isEdit)        data.user_uuid = uuid;
     if (email)         data.user_email = email;
