@@ -762,7 +762,7 @@ class TwoNIntercomCard extends HTMLElement {
 
     @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:.4} }
     @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  `
+  `; }
 
   static getStubConfig() {
     return { type:"custom:twon-intercom-card", entity_prefix:"", title:"2N Intercom" };
