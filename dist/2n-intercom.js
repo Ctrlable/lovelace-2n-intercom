@@ -549,338 +549,220 @@ class TwoNIntercomCard extends HTMLElement {
   // ── Styles — all via HA CSS variables ─────────────────────────────────────
 
   _styles() { return `
-    /* ── Reset ── */
     *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── HA Typography variables
-         These are the actual variable names HA uses internally in its UI ── */
+    /* ── Host — must be 100% width and use container queries ── */
     :host {
-      /* Sizes */
-      --font-headline:     var(--paper-font-headline_-_font-size,      24px);
-      --font-title:        var(--paper-font-title_-_font-size,         20px);
-      --font-subhead:      var(--paper-font-subhead_-_font-size,       16px);
-      --font-body-1:       var(--paper-font-body-1_-_font-size,        14px);
-      --font-body-2:       var(--paper-font-body-2_-_font-size,        14px);
-      --font-caption:      var(--paper-font-caption_-_font-size,       12px);
-      --font-overline:     var(--paper-font-overline_-_font-size,      10px);
-
-      /* Weights */
-      --fw-medium:         var(--paper-font-body-2_-_font-weight,      500);
-      --fw-regular:        var(--paper-font-body-1_-_font-weight,      400);
-
-      /* Colours — all HA theme */
-      --c-bg:              var(--card-background-color,    var(--ha-card-background, #fff));
-      --c-bg2:             var(--secondary-background-color,           #f5f5f5);
-      --c-divider:         var(--divider-color,            rgba(0,0,0,.12));
-      --c-accent:          var(--primary-color,                        #03a9f4);
-      --c-text-primary:    var(--primary-text-color,                   #212121);
-      --c-text-secondary:  var(--secondary-text-color,                 #727272);
-      --c-text-disabled:   var(--disabled-text-color,                  #bdbdbd);
-      --c-success:         var(--success-color,                        #4caf50);
-      --c-error:           var(--error-color,                          #f44336);
-      --c-warning:         var(--warning-color,                        #ff9800);
-
-      /* Shapes */
-      --radius:            var(--ha-card-border-radius,                12px);
-      --radius-sm:         8px;
-      --radius-xs:         4px;
-
+      /* Typography — real HA paper-font variable names */
+      --font-headline:    var(--paper-font-headline_-_font-size,      24px);
+      --font-title:       var(--paper-font-title_-_font-size,         20px);
+      --font-subhead:     var(--paper-font-subhead_-_font-size,       16px);
+      --font-body-1:      var(--paper-font-body-1_-_font-size,        14px);
+      --font-body-2:      var(--paper-font-body-2_-_font-size,        14px);
+      --font-caption:     var(--paper-font-caption_-_font-size,       12px);
+      --font-overline:    10px;
+      --fw-medium:        var(--paper-font-body-2_-_font-weight,      500);
+      --fw-regular:       var(--paper-font-body-1_-_font-weight,      400);
+      /* Colours */
+      --c-bg:             var(--card-background-color, var(--ha-card-background, #fff));
+      --c-bg2:            var(--secondary-background-color, #f5f5f5);
+      --c-divider:        var(--divider-color, rgba(0,0,0,.12));
+      --c-accent:         var(--primary-color, #03a9f4);
+      --c-text1:          var(--primary-text-color, #212121);
+      --c-text2:          var(--secondary-text-color, #727272);
+      --c-text3:          var(--disabled-text-color, #bdbdbd);
+      --c-success:        var(--success-color, #4caf50);
+      --c-error:          var(--error-color, #f44336);
+      --c-warning:        var(--warning-color, #ff9800);
+      /* Shape */
+      --r:                var(--ha-card-border-radius, 12px);
+      --r-sm:             8px;
+      --r-xs:             4px;
+      /* KEY: fill parent width */
       display: block;
+      width: 100%;
+      container-type: inline-size;
+      container-name: card;
       font-family: var(--paper-font-common-base_-_font-family, Roboto, sans-serif);
-      color: var(--c-text-primary);
+      color: var(--c-text1);
     }
 
-    /* ── HA Card base ── */
     ha-card {
       display: block;
+      width: 100%;
       overflow: hidden;
     }
 
     /* ── Typography helpers ── */
-    .headline    { font-size: var(--font-headline);  font-weight: var(--fw-medium); line-height: 1.3; color: var(--c-text-primary); }
-    .title       { font-size: var(--font-title);     font-weight: var(--fw-medium); color: var(--c-text-primary); }
-    .subhead     { font-size: var(--font-subhead);   font-weight: var(--fw-medium); color: var(--c-text-primary); }
-    .body-1      { font-size: var(--font-body-1);    font-weight: var(--fw-regular); color: var(--c-text-primary); }
-    .body-2      { font-size: var(--font-body-2);    font-weight: var(--fw-medium); color: var(--c-text-primary); }
-    .caption     { font-size: var(--font-caption);   font-weight: var(--fw-regular); color: var(--c-text-secondary); }
-    .overline    { font-size: var(--font-overline);  font-weight: var(--fw-medium);  color: var(--c-text-secondary); text-transform: uppercase; letter-spacing: .1em; }
+    .headline  { font-size:var(--font-headline); font-weight:var(--fw-medium);  line-height:1.3; color:var(--c-text1); }
+    .subhead   { font-size:var(--font-subhead);  font-weight:var(--fw-medium);  color:var(--c-text1); }
+    .body-1    { font-size:var(--font-body-1);   font-weight:var(--fw-regular); color:var(--c-text1); }
+    .body-2    { font-size:var(--font-body-2);   font-weight:var(--fw-medium);  color:var(--c-text1); }
+    .caption   { font-size:var(--font-caption);  font-weight:var(--fw-regular); color:var(--c-text2); }
+    .overline  { font-size:var(--font-overline); font-weight:var(--fw-medium);  color:var(--c-text2); text-transform:uppercase; letter-spacing:.1em; }
 
     /* ── Card header ── */
     .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       padding: 16px 16px 12px;
       border-bottom: 1px solid var(--c-divider);
     }
     .header-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
-      background: var(--c-accent);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      opacity: .9;
+      width:40px; height:40px; border-radius:10px; background:var(--c-accent);
+      display:flex; align-items:center; justify-content:center; flex-shrink:0; opacity:.9;
     }
-    .header-icon ha-icon { --mdc-icon-size: 22px; color: #fff; }
-    .card-header-title { font-size: var(--font-subhead); font-weight: var(--fw-medium); color: var(--c-text-primary); }
-    .header-subtitle   { font-size: var(--font-caption); color: var(--c-text-secondary); margin-top: 1px; }
+    .header-icon ha-icon { --mdc-icon-size:22px; color:#fff; }
+    .card-header-title { font-size:var(--font-subhead); font-weight:var(--fw-medium); color:var(--c-text1); }
+    .header-subtitle   { font-size:var(--font-caption); color:var(--c-text2); margin-top:1px; }
 
     /* ── Nav tabs ── */
     .nav-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--c-divider);
-      background: var(--c-bg2);
-      padding: 0 8px;
+      display:flex; border-bottom:1px solid var(--c-divider);
+      background:var(--c-bg2); padding:0 8px;
     }
     .nav-tab {
-      padding: 10px 16px;
-      font-size: var(--font-caption);
-      font-weight: var(--fw-medium);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--c-text-secondary);
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      font-family: inherit;
-      transition: color .15s, border-color .15s;
+      padding:10px 16px; font-size:var(--font-caption); font-weight:var(--fw-medium);
+      text-transform:uppercase; letter-spacing:.08em; color:var(--c-text2);
+      background:none; border:none; border-bottom:2px solid transparent;
+      cursor:pointer; font-family:inherit; transition:color .15s, border-color .15s;
     }
-    .nav-tab:hover  { color: var(--c-text-primary); }
-    .nav-tab.active { color: var(--c-accent); border-bottom-color: var(--c-accent); }
+    .nav-tab:hover  { color:var(--c-text1); }
+    .nav-tab.active { color:var(--c-accent); border-bottom-color:var(--c-accent); }
 
     /* ── Camera ── */
-    .cam-wrap {
-      position: relative;
-      background: #000;
-      aspect-ratio: 4/3;
-      overflow: hidden;
-    }
+    .cam-wrap { position:relative; background:#000; aspect-ratio:4/3; overflow:hidden; width:100%; }
     .cam-wrap img { width:100%; height:100%; object-fit:cover; display:block; }
     .cam-overlay  { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 60%,rgba(0,0,0,.4)); pointer-events:none; }
-    .cam-badge {
-      position: absolute; top: 10px; left: 10px;
-      background: rgba(0,0,0,.55);
-      border-radius: 4px;
-      padding: 3px 8px;
-      font-size: var(--font-caption);
-      color: #fff;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .live-dot { width:6px; height:6px; border-radius:50%; background:var(--c-success); animation:pulse 2s infinite; }
-    ha-icon-button#cam-refresh {
-      position: absolute; top: 6px; right: 6px;
-      --mdc-icon-button-size: 32px;
-      --mdc-icon-size: 18px;
-      color: #fff;
-    }
-    .cam-nofeed {
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      height:180px; gap:8px; color:var(--c-text-secondary);
-      background:var(--c-bg2);
-    }
-    .cam-nofeed ha-icon { --mdc-icon-size: 36px; }
+    .cam-badge    { position:absolute; top:10px; left:10px; background:rgba(0,0,0,.55); border-radius:4px; padding:3px 8px; font-size:var(--font-caption); color:#fff; display:flex; align-items:center; gap:5px; }
+    .live-dot     { width:6px; height:6px; border-radius:50%; background:var(--c-success); animation:pulse 2s infinite; }
+    ha-icon-button#cam-refresh { position:absolute; top:6px; right:6px; --mdc-icon-button-size:32px; --mdc-icon-size:18px; color:#fff; }
+    .cam-nofeed   { display:flex; flex-direction:column; align-items:center; justify-content:center; height:180px; gap:8px; color:var(--c-text2); background:var(--c-bg2); }
+    .cam-nofeed ha-icon { --mdc-icon-size:36px; }
 
-    /* ── Switches ── */
+    /* ── Switches
+         Default: single column stack (narrow cards / mobile)
+         ≥ 400px: 2 columns
+         ≥ 600px: 4 columns (all switches in one row) ── */
     .switches-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: 1fr;
       gap: 8px;
       padding: 10px 16px;
       background: var(--c-bg2);
       border-bottom: 1px solid var(--c-divider);
     }
+    @container card (min-width: 400px) {
+      .switches-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @container card (min-width: 600px) {
+      .switches-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
     .switch-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 10px 8px 12px;
-      background: var(--c-bg);
-      border: 1px solid var(--c-divider);
-      border-radius: var(--radius-sm);
-      gap: 6px;
-      min-width: 0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:8px 10px 8px 12px; background:var(--c-bg);
+      border:1px solid var(--c-divider); border-radius:var(--r-sm); gap:6px; min-width:0;
     }
-    .switch-item.sw-on { border-color: var(--c-success); }
-    .sw-info {
-      display: flex; align-items: center; gap: 8px;
-      cursor: pointer; flex: 1; min-width: 0; overflow: hidden;
-    }
+    .switch-item.sw-on { border-color:var(--c-success); }
+    .sw-info  { display:flex; align-items:center; gap:8px; cursor:pointer; flex:1; min-width:0; overflow:hidden; }
     .sw-state-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-    .dot-on  { background: var(--c-success); }
-    .dot-off { background: var(--c-text-disabled); }
+    .dot-on  { background:var(--c-success); }
+    .dot-off { background:var(--c-text3); }
     .sw-info .body-2 { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .switch-item ha-button {
-      flex-shrink: 0;
-      --mdc-theme-primary: var(--c-accent);
-    }
+    .switch-item ha-button { flex-shrink:0; --mdc-theme-primary:var(--c-accent); }
 
-    /* ── Content padding ── */
-    .content-pad { padding: 16px; }
+    /* ── Content ── */
+    .content-pad { padding:16px; }
 
-    /* ── Stats ── */
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .stat-chip {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 12px 8px;
-      background: var(--c-bg2);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--c-divider);
-      gap: 2px;
-    }
-    .stat-val   { font-size: var(--font-title); font-weight: var(--fw-medium); color: var(--c-accent); }
+    /* ── Stats row — always 3 equal columns ── */
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+    .stat-chip { display:flex; flex-direction:column; align-items:center; padding:12px 8px; background:var(--c-bg2); border-radius:var(--r-sm); border:1px solid var(--c-divider); gap:2px; }
+    .stat-val  { font-size:var(--font-title); font-weight:var(--fw-medium); color:var(--c-accent); }
 
     /* ── List header ── */
-    .list-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .list-header ha-button { --mdc-theme-primary: var(--c-accent); }
+    .list-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .list-header ha-button { --mdc-theme-primary:var(--c-accent); }
 
     /* ── User rows ── */
-    .user-scroll { max-height: 340px; overflow-y: auto; }
-    .user-scroll::-webkit-scrollbar { width: 4px; }
-    .user-scroll::-webkit-scrollbar-thumb { background: var(--c-divider); border-radius: 2px; }
+    .user-scroll { max-height:340px; overflow-y:auto; }
+    .user-scroll::-webkit-scrollbar { width:4px; }
+    .user-scroll::-webkit-scrollbar-thumb { background:var(--c-divider); border-radius:2px; }
+    .user-row { display:flex; align-items:center; gap:12px; padding:10px 4px 10px 0; border-bottom:1px solid var(--c-divider); }
+    .user-row:last-child { border-bottom:none; }
+    .user-avatar { width:40px; height:40px; border-radius:50%; background:var(--c-accent); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:var(--fw-medium); flex-shrink:0; opacity:.85; font-size:var(--font-body-1); }
+    .user-body  { flex:1; min-width:0; }
+    .user-name  { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .user-sub   { margin-top:1px; }
+    .badge-row  { display:flex; gap:4px; margin-top:4px; flex-wrap:wrap; }
+    .ha-chip    { display:inline-flex; align-items:center; padding:1px 8px; border-radius:12px; font-size:var(--font-caption); font-weight:var(--fw-medium); background:var(--c-bg2); border:1px solid var(--c-divider); color:var(--c-text2); }
+    .user-actions ha-icon-button { --mdc-icon-button-size:36px; --mdc-icon-size:18px; color:var(--c-text2); }
+    .empty-state { display:flex; flex-direction:column; align-items:center; padding:32px 16px; gap:8px; color:var(--c-text2); }
+    .empty-state ha-icon { --mdc-icon-size:40px; }
+    .show-all-row { text-align:center; padding:8px 0 0; }
+    .text-btn { background:none; border:none; cursor:pointer; font-family:inherit; font-size:var(--font-caption); color:var(--c-accent); font-weight:var(--fw-medium); text-transform:uppercase; letter-spacing:.08em; padding:4px 8px; }
 
-    .user-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 8px 10px 0;
-      border-bottom: 1px solid var(--c-divider);
-    }
-    .user-row:last-child { border-bottom: none; }
-    .user-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: var(--c-accent);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-weight: var(--fw-medium);
-      flex-shrink: 0; opacity: .85;
-    }
-    .user-body { flex: 1; min-width: 0; }
-    .user-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-sub  { margin-top: 1px; }
-    .badge-row { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-    .ha-chip {
-      display: inline-flex; align-items: center;
-      padding: 1px 8px;
-      border-radius: 12px;
-      font-size: var(--font-caption);
-      font-weight: var(--fw-medium);
-      background: var(--c-bg2);
-      border: 1px solid var(--c-divider);
-      color: var(--c-text-secondary);
-    }
-    .user-actions {
-      display: flex; gap: 0; flex-shrink: 0;
-    }
-    .user-actions ha-icon-button {
-      --mdc-icon-button-size: 36px;
-      --mdc-icon-size: 18px;
-      color: var(--c-text-secondary);
-    }
-    .user-actions ha-icon-button:hover { color: var(--c-text-primary); }
+    /* ── Form header ── */
+    .form-header { display:flex; align-items:center; gap:4px; margin-bottom:20px; }
+    .form-header ha-icon-button { --mdc-icon-button-size:36px; --mdc-icon-size:20px; color:var(--c-text2); }
+    .form-section-label { margin:16px 0 10px; }
 
-    .empty-state {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 32px 16px; gap: 8px; color: var(--c-text-secondary);
-    }
-    .empty-state ha-icon { --mdc-icon-size: 40px; }
-
-    .show-all-row { text-align: center; padding: 8px 0 0; }
-    .text-btn {
-      background: none; border: none; cursor: pointer; font-family: inherit;
-      font-size: var(--font-caption); color: var(--c-accent); font-weight: var(--fw-medium);
-      text-transform: uppercase; letter-spacing: .08em; padding: 4px 8px;
-    }
-
-    /* ── Form ── */
-    .form-header {
-      display: flex; align-items: center; gap: 4px; margin-bottom: 20px;
-    }
-    .form-header ha-icon-button {
-      --mdc-icon-button-size: 36px;
-      --mdc-icon-size: 20px;
-      color: var(--c-text-secondary);
-    }
-    .form-section-label { margin: 16px 0 10px; }
-    .form-section-label:first-of-type { margin-top: 0; }
-
+    /* ── Form grid
+         Default (narrow): single column, all fields full width
+         ≥ 400px: two columns, fields auto-assigned ── */
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
     }
-    .form-field {
-      display: flex; flex-direction: column; gap: 4px;
-      grid-column: span 1;
+    @container card (min-width: 400px) {
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .form-field.full { grid-column: span 2; }
     }
-    .form-field.full { grid-column: span 2; }
-    .form-label { display: block; }
+
+    .form-field { display:flex; flex-direction:column; gap:4px; }
+    .form-label { display:block; }
 
     .ha-input {
-      width: 100%;
-      padding: 8px 12px;
-      background: var(--c-bg2);
-      border: 1px solid var(--c-divider);
-      border-radius: var(--radius-xs);
-      color: var(--c-text-primary);
-      font-size: var(--font-body-1);
-      font-family: inherit;
-      outline: none;
-      transition: border-color .15s;
+      width:100%; padding:8px 12px;
+      background:var(--c-bg2); border:1px solid var(--c-divider);
+      border-radius:var(--r-xs); color:var(--c-text1);
+      font-size:var(--font-body-1); font-family:inherit;
+      outline:none; transition:border-color .15s;
     }
-    .ha-input:focus { border-color: var(--c-accent); }
+    .ha-input:focus { border-color:var(--c-accent); }
 
-    .checkbox-field {
-      flex-direction: row;
-      align-items: center;
-      gap: 8px;
-      padding-top: 20px;
-    }
-    .ha-checkbox { accent-color: var(--c-accent); width: 16px; height: 16px; cursor: pointer; }
+    .checkbox-field { flex-direction:row; align-items:center; gap:8px; padding-top:20px; }
+    .ha-checkbox    { accent-color:var(--c-accent); width:16px; height:16px; cursor:pointer; }
 
+    /* ── Switch codes grid
+         Default: 2 columns (narrow / mobile)
+         ≥ 400px: 4 columns ── */
     .codes-grid {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-
-    .hint-text { margin-top: 6px; color: var(--c-text-disabled); }
-
-    .form-actions {
-      display: flex; gap: 8px; justify-content: flex-end;
-      margin-top: 20px; padding-top: 16px;
-      border-top: 1px solid var(--c-divider);
+    @container card (min-width: 400px) {
+      .codes-grid { grid-template-columns: repeat(4,1fr); }
     }
-    .form-actions ha-button { --mdc-theme-primary: var(--c-accent); }
-    .danger-btn { --mdc-theme-primary: var(--c-error); }
+
+    .hint-text { margin-top:6px; color:var(--c-text3); }
+
+    .form-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:20px; padding-top:16px; border-top:1px solid var(--c-divider); flex-wrap:wrap; }
+    .form-actions ha-button { --mdc-theme-primary:var(--c-accent); }
+    .danger-btn { --mdc-theme-primary:var(--c-error); }
 
     /* ── Toast ── */
-    #toast-area { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
-    .toast {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 16px;
-      border-radius: var(--radius-sm);
-      color: #fff;
-      animation: slideUp .2s ease;
-      box-shadow: var(--ha-card-box-shadow, 0 2px 8px rgba(0,0,0,.2));
-      min-width: 200px;
-      max-width: 320px;
-    }
-    .toast.success { background: var(--c-success); }
-    .toast.error   { background: var(--c-error); }
-    .toast ha-icon { --mdc-icon-size: 18px; flex-shrink: 0; }
-
-    /* ── Dialog scrim ── */
-    .dlg-scrim ha-dialog { --mdc-theme-primary: var(--c-accent); }
+    #toast-area { position:fixed; bottom:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+    .toast { display:flex; align-items:center; gap:8px; padding:10px 16px; border-radius:var(--r-sm); color:#fff; animation:slideUp .2s ease; box-shadow:var(--ha-card-box-shadow, 0 2px 8px rgba(0,0,0,.2)); min-width:180px; max-width:300px; pointer-events:auto; }
+    .toast.success { background:var(--c-success); }
+    .toast.error   { background:var(--c-error); }
+    .toast ha-icon { --mdc-icon-size:18px; flex-shrink:0; }
+    .dlg-scrim ha-dialog { --mdc-theme-primary:var(--c-accent); }
 
     @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:.4} }
     @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  `; }
+  `
 
   static getStubConfig() {
     return { type:"custom:twon-intercom-card", entity_prefix:"", title:"2N Intercom" };
